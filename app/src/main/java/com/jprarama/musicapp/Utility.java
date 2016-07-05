@@ -13,12 +13,18 @@ import java.util.ArrayList;
  */
 public class Utility {
 
-    public static ArrayList<AudioItem> getAudioFiles(Context context) {
+    public static ArrayList<AudioItem> getAudioFiles(Context context, String query) {
         String selection = Media.IS_MUSIC + " != 0";
+        String[] params = null;
+        if (query != null) {
+            selection += " AND " + Media.TITLE + " like ?";
+            params = new String[] { "%" + query + "%" };
+        }
+
         final Cursor mCursor = context.getContentResolver().query(
                 Media.EXTERNAL_CONTENT_URI,
                 new String[]{Media.TITLE, Media.DATA, Media.ARTIST, Media.ALBUM},
-                selection, null, "LOWER(" + Media.TITLE + ") ASC");
+                selection, params, "LOWER(" + Media.TITLE + ") ASC");
 
         int count = mCursor.getCount();
         ArrayList<AudioItem> items = new ArrayList<>(count);

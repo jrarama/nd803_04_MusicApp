@@ -7,4 +7,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="controls_padding">8dp</dimen>
     <dimen name="listPadding">16dp</dimen>
+    <dimen name="textPadding">16dp</dimen>
+    <dimen name="margin_left">5dp</dimen>
 </resources>

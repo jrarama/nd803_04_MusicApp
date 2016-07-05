@@ -22,6 +22,10 @@ public class AudioItemAdapter extends ArrayAdapter<AudioItem> {
         TextView tvArtist;
     }
 
+    public AudioItemAdapter(Context context, int resource) {
+        super(context, resource);
+    }
+
     public AudioItemAdapter(Context context, int resource, List<AudioItem> objects) {
         super(context, resource, objects);
     }

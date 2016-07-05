@@ -8,12 +8,14 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jprarama.musicapp.R;
@@ -24,8 +26,12 @@ import com.jprarama.musicapp.model.AudioItem;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = MainActivity.class.getName();
 
     private ArrayList<AudioItem> musicList;
+    private TextView tvNoResults;
+    private ListView listView;
+    private AudioItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +39,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         musicList = Utility.getAudioFiles(this, null);
-        ListView listView = (ListView) findViewById(R.id.musicList);
-        AudioItemAdapter adapter = new AudioItemAdapter(this, android.R.layout.simple_list_item_1, musicList);
+        listView = (ListView) findViewById(R.id.musicList);
+        tvNoResults = (TextView) findViewById(R.id.tvNoResults);
+
+        adapter = new AudioItemAdapter(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(adapter);
+        adapter.setNotifyOnChange(false);
 
         final Activity activity = this;
 
@@ -50,6 +59,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        listItems();
+    }
+
+    private void listItems() {
+        if (musicList == null) {
+            Log.w(TAG, "Music List is null");
+            return;
+        }
+
+        if (musicList.isEmpty()) {
+            tvNoResults.setText(getString(R.string.no_media_files));
+            tvNoResults.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            return;
+        }
+        tvNoResults.setVisibility(View.GONE);
+        adapter.clear();
+        adapter.addAll(musicList);
+        adapter.notifyDataSetChanged();
+        listView.setVisibility(View.VISIBLE);
     }
 
     @Override

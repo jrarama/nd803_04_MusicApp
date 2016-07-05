@@ -19,4 +19,5 @@
     <string name="no_results">No results found for query</string>
     <string name="query_dummy">Sample Query</string>
     <string name="search_results">Search Results</string>
+    <string name="no_media_files">No available audio files</string>
 </resources>
